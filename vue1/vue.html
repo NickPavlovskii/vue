@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./vcss.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+    <title>Document</title>
+</head>
+<body>
+
+<div id='app'>
+    <div v-if="dataSent"  class='todo-list' >
+      <div class='list-item'>
+          <div class='title'>
+            <div>
+            Карточка  
+          </div>
+            <button class='add_data'
+            id='send-data'
+            tabindex='0'
+            @click='sendData'
+            @keyup.enter='sendData'>
+           Send data
+         </button>
+        
+        </div>
+          
+          <div class='text'> <p> Имя: </p> <input type='text' v-model='ownerName' ></div>
+          <div class='text'><p>Фамилия:</p> <input type='text' v-model='ownerSurname'></div>
+          <div class='text'><p>Номер:</p> <input type='text' v-model='ownerPhone'></div>
+          <div class='text'><p>Email:</p> <input type='text' v-model='ownerEmail'></div>
+      </div>
+    
+      <transition-group name='bounce' tag='div'>
+          <div class='list-item' v-for='(guest, index) in guests' :key='guest.id' @dblclick='deleteGuest(index)' >
+            
+              <div class='title'>Гость {{ index + 1 }}:</div>
+              <div class='text'><p> Имя: </p> <input type='text' v-model='guest.name'></div>
+              
+         
+              <div class='delete-button'
+                   tabindex='0'
+                   :title='messages.delete'
+                   @click='deleteItem(index)'
+                   @keyup.enter='deleteItem(index)'>
+                  <span class='fa fa-trash'></span>
+              </div>
+          </div>
+      </transition-group>
+      <div class='add-button'
+           id='add-new'
+           tabindex='0'
+           @click='addNewItem'
+           @keyup.enter='addNewItem'>
+          <span class='fa fa-plus'></span>
+      </div>
+     
+
+    </div>
+
+    <div v-else  class="table-wrapper">
+       <h2 class="table--title">ALL DONE!</h2> 
+       <div class="table-cont">
+      <table class="table-container">
+        <tr>
+          <th>Имя</th>
+          <td>{{ ownerName }}</td>
+        </tr>
+        <tr>
+          <th>Фамилия</th>
+          <td>{{ ownerSurname }}</td>
+        </tr>
+        <tr>
+          <th>Номер</th>
+          <td>{{ ownerPhone }}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{ ownerEmail }}</td>
+        </tr>
+        <tr>
+          <th>Гости</th>
+          <td>
+            <ul>
+              <li class="guests" v-for="guest in guests">{{ guest.name }}</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+     <div class='back'> <a  href="./vue.html">back</a></div>
+      </div>
+    
+  </div>
+ 
+
+
+    
+</body>
+<script src="https://unpkg.com/vue@2.7.14/dist/vue.js"></script>
+<script type="text/javascript">
+
+new Vue({
+  el: '#app',
+  data: {
+    guests: [],
+    ownerName: '',
+    ownerSurname: '',
+    ownerPhone: '',
+    ownerEmail: '',
+    messages: {},
+    dataSent: true
+  },
+  methods: {
+    addNewGuest() {
+      this.guests.push({
+        id: this.guests.length + 1,
+        name: ''
+      });
+    },
+    deleteGuest(index) {
+      this.guests.splice(index, 1);
+    },
+    sendData() {
+      
+// Set dataSent to true to show table and hide form
+this.dataSent = false;
+
+},
+    addNewItem() {
+      this.guests.push({
+        name: '',
+        id: ''
+      });
+    },
+    deleteItem(index) {
+      this.guests.splice(index, 1);
+    }
+  }
+});
+
+</script>
+
+
+</html>
